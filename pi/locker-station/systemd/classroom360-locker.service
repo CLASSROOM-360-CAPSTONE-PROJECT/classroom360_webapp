@@ -1,0 +1,23 @@
+[Unit]
+Description=Classroom360 key locker station
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=classroom360
+Group=classroom360
+EnvironmentFile=/etc/classroom360/locker.env
+WorkingDirectory=/opt/classroom360/locker
+ExecStart=/opt/classroom360/locker-venv/bin/python -m locker_station --config /etc/classroom360/locker.json run
+Restart=always
+RestartSec=3
+# the program locks every door when it stops; the folders below are the only places it may write
+StateDirectory=classroom360
+LogsDirectory=classroom360
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

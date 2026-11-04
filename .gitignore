@@ -1,0 +1,20 @@
+# Classroom360: the web app, the database files and the two Raspberry Pi programs.
+# The phone app in mobile/ has its own Git repository.
+mobile/
+
+node_modules/
+dist/
+*.tsbuildinfo
+
+# secrets and machine-specific settings stay out of Git
+.env
+.env.*
+!.env.example
+*.local
+pi/locker-station/config.json
+
+__pycache__/
+*.pyc
+*.log
+.DS_Store
+Thumbs.db

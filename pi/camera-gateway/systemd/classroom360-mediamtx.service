@@ -1,0 +1,18 @@
+[Unit]
+Description=Classroom360 camera relay (MediaMTX)
+After=network-online.target classroom360-camera-auth.service
+Wants=network-online.target classroom360-camera-auth.service
+
+[Service]
+User=classroom360
+Group=classroom360
+ExecStart=/opt/classroom360/mediamtx /etc/classroom360/mediamtx.yml
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

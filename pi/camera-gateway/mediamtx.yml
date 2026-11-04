@@ -1,0 +1,56 @@
+# Classroom360 camera gateway: MediaMTX settings for the parent Raspberry Pi.
+#
+# MediaMTX relays each classroom camera to the Classroom360 web page as a WebRTC picture.
+# Before it sends anything it asks camera_auth.py (port 9120, this Pi only) whether the person
+# watching is allowed. Only an administrator or a dean of the school passes.
+#
+# Add one block under "paths" for every camera. The name (for example lrc-301) is what you type as
+# "Stream name" on the Cameras page of the web app.
+
+logLevel: info
+
+# Nothing here needs the management interfaces.
+api: no
+metrics: no
+pprof: no
+playback: no
+
+# Only the WebRTC picture is offered to the network.
+rtmp: no
+hls: no
+srt: no
+
+# RTSP listens on this Pi only: it is how a program on the Pi (ffmpeg or rpicam-vid for a
+# Pi camera module) hands a picture to MediaMTX. Cameras on the network are pulled by "source" below.
+rtsp: yes
+rtspAddress: 127.0.0.1:8554
+rtspTransports: [tcp]
+
+webrtc: yes
+webrtcAddress: :8889            # the page's "Gateway address" is http://<this Pi's IP>:8889
+# Browsers on other computers reach the Pi on these. Open them in the Pi's firewall if you use one.
+webrtcLocalUDPAddress: :8189
+webrtcLocalTCPAddress: :8189
+# If the Pi has several network addresses, list the one the classrooms' computers use:
+# webrtcAdditionalHosts: [192.168.1.50]
+# The page sends the person's token in a header, so any web address may ask; the token decides.
+webrtcAllowOrigins: ['*']
+
+# Every request goes to the checker first.
+authMethod: http
+authHTTPAddress: http://127.0.0.1:9120/auth
+
+paths:
+  # --- an IP camera on the network (the usual CCTV camera) ---------------------------------
+  # Use the camera's H.264 stream. A camera set to H.265/HEVC will not show in most browsers:
+  # open the camera's settings and choose H.264 for the sub stream.
+  #
+  # lrc-301:
+  #   source: rtsp://camera-user:camera-password@192.168.1.60:554/stream2
+  #   rtspTransport: tcp
+  #   sourceOnDemand: yes          # connect to the camera only while somebody is watching
+  #   sourceOnDemandCloseAfter: 20s
+  #
+  # --- a Raspberry Pi camera module plugged into this Pi ----------------------------------
+  # lrc-302:
+  #   source: publisher            # see README.md for the rpicam-vid / ffmpeg command

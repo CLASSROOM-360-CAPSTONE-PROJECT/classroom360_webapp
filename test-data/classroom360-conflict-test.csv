@@ -1,0 +1,12 @@
+Instructor,Employee No,Email,Employment,Max Weekly Hours,Work Hours,Course Code,Course Title,Lecture Units,Lab Units,Room Type,Program,Year,Section,Students,Planted Conflict
+TEST Ana Control,T-001,test.control@example.edu,Full-time,24,Mon-Fri 8:00-17:00,TST 101,Test Control Course 1,3,,,BSIT,1,X,35,none (control row: should be placed normally)
+TEST Ana Control,,,,,,TST 102,Test Control Course 2,3,,,BSIT,1,X,35,"none (control row: same students as the line above, so it must not overlap it)"
+TEST Overloaded,T-002,test.overloaded@example.edu,Full-time,6,Mon-Fri 8:00-17:00,TST 201,Test Overload A,3,,,BSIT,2,X,35,CONFLICT 1: this instructor is given 12 hours a week but may teach only 6
+TEST Overloaded,,,,,,TST 202,Test Overload B,3,,,BSIT,2,X,35,"CONFLICT 1 (same instructor, more load)"
+TEST Overloaded,,,,,,TST 203,Test Overload C,3,,,BSIT,2,X,35,"CONFLICT 1 (same instructor, more load)"
+TEST Overloaded,,,,,,TST 204,Test Overload D,3,,,BSIT,2,X,35,"CONFLICT 1 (same instructor, more load)"
+TEST Part Timer,T-003,test.parttimer@example.edu,Part-time,12,Mon 8:00-10:00,TST 301,Test Narrow Window,3,,,BSCPE,1,X,30,CONFLICT 2: works only Monday 8-10 (2 hours) but must teach 3 hours on two different days
+TEST Chemist,T-004,test.chemist@example.edu,Full-time,24,Mon-Fri 8:00-17:00,TST 401,Test Chemistry,2,1,Chemistry Laboratory,BSCPE,2,X,30,CONFLICT 3: the lab part needs a Chemistry Laboratory and no room has that type
+TEST Big Class,T-005,test.bigclass@example.edu,Full-time,24,Mon-Fri 8:00-17:00,TST 501,Test Big Lecture,3,,,BSIT,3,X,120,CONFLICT 4: 120 students but the largest room seats 45
+TEST Tuesday One,T-006,test.tuesday1@example.edu,Part-time,12,Tue 8:00-9:30,TST 601,Test Same Slot A,3,,,BSIT,1,Y,30,CONFLICT 5: both teachers can only teach Tuesday 8:00-9:30 and they teach the same students
+TEST Tuesday Two,T-007,test.tuesday2@example.edu,Part-time,12,Tue 8:00-9:30,TST 602,Test Same Slot B,3,,,BSIT,1,Y,30,CONFLICT 5 (the other teacher of the same students)

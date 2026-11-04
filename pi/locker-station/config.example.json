@@ -1,0 +1,20 @@
+{
+  "supabase_url": "https://YOUR-PROJECT.supabase.co",
+  "station_label": "LRC 3F Key Locker",
+
+  "doors": {
+    "1": { "relay": 17, "switch": 5 },
+    "2": { "relay": 27, "switch": 6 },
+    "3": { "relay": 22, "switch": 13 },
+    "4": { "relay": 23, "switch": 19 }
+  },
+
+  "reader": { "type": "mfrc522", "uid_format": "hex", "rst_pin": 25 },
+  "display": { "type": "lcd_i2c", "address": "0x27", "cols": 16, "rows": 2 },
+  "indicators": { "green": 20, "red": 21, "buzzer": 26 },
+
+  "relay_active_high": false,
+  "key_present_when": "closed",
+  "unlock_seconds": 5,
+  "confirm_ms": 300
+}

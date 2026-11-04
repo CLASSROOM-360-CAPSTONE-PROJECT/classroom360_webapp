@@ -1,0 +1,337 @@
+@import "tailwindcss";
+
+/*
+  Classroom360 design tokens.
+  Ink navy carries structure; brass is reserved for the key-tag motif and primary actions.
+  Status colours (emerald / amber / rose) come from Tailwind's defaults.
+*/
+@theme {
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  /* titles, figures and plates: the narrow cut of the same family, the lettering of a timetable board or a door sign */
+  --font-display: "IBM Plex Sans Condensed", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-canvas: #edf0f5;
+
+  --color-ink-950: #0b1524;
+  --color-ink-900: #111f33;
+  --color-ink-800: #1a2c45;
+  --color-ink-700: #263d5c;
+  --color-ink-600: #3a5578;
+  --color-ink-500: #5a7396;
+  --color-ink-400: #8499b6;
+  --color-ink-300: #a9b8cd;
+  --color-ink-200: #cfd8e5;
+  --color-ink-100: #e6ebf2;
+  --color-ink-50: #f4f6fa;
+
+  --color-brass-700: #7d5112;
+  --color-brass-600: #9a6516;
+  --color-brass-500: #b7791f;
+  --color-brass-400: #d29a3f;
+  --color-brass-300: #e3b96a;
+  --color-brass-200: #efd9ac;
+  --color-brass-100: #f7ebcf;
+  --color-brass-50: #fbf5e6;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink-900);
+    font-size: 14px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brass-500);
+    outline-offset: 2px;
+  }
+  dialog::backdrop {
+    background: rgb(11 21 36 / 0.55);
+  }
+}
+
+/* ---------- motion ----------
+   Short and only where it answers something the person did or shows what changed: a page opening, a message
+   arriving, content still loading. Everything here stops for people who ask their system to reduce motion. */
+@keyframes c360-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes c360-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes c360-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes c360-flip {
+  from {
+    opacity: 0.2;
+    transform: perspective(240px) rotateX(-85deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes c360-swing {
+  0% {
+    transform: rotate(-8deg);
+  }
+  35% {
+    transform: rotate(4.5deg);
+  }
+  65% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+.page-enter {
+  animation: c360-fade 140ms ease-out;
+}
+/* one figure on the ledger board turning to its new value, like the flap of a departures board */
+.flap {
+  transform-origin: 50% 0;
+  animation: c360-flip 340ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+/* the key tags on the sign-in page settle on their hooks once, when the page opens */
+.swing {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: c360-swing 1.1s ease-out both;
+}
+.notice-in {
+  animation: c360-drop 180ms ease-out;
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--color-ink-100) 30%, var(--color-ink-50) 50%, var(--color-ink-100) 70%);
+  background-size: 200% 100%;
+  animation: c360-shimmer 1.4s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .notice-in,
+  .skeleton,
+  .flap,
+  .swing {
+    animation: none;
+  }
+  *,
+  ::before,
+  ::after {
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- drafting paper ----------
+   A faint measured grid behind each page title, fading out toward the left, like the paper a floor plan is drawn on.
+   It sits in a decorative element of its own so it never touches text. */
+.drafting {
+  background-image:
+    linear-gradient(to right, rgb(38 61 92 / 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(38 61 92 / 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: right top;
+  -webkit-mask-image: radial-gradient(ellipse 75% 110% at 90% 0%, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse 75% 110% at 90% 0%, #000 15%, transparent 72%);
+}
+/* the same paper on the dark sign-in panel */
+.drafting-dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgb(169 184 205 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(169 184 205 / 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 25% 45%, #000 10%, transparent 75%);
+  mask-image: radial-gradient(ellipse 90% 80% at 25% 45%, #000 10%, transparent 75%);
+  pointer-events: none;
+}
+/* the scale along the foot of a drawing: a tick every 8 px, a taller one every 40 px */
+.ruler {
+  background-image:
+    linear-gradient(to right, var(--color-ink-300) 1px, transparent 1px),
+    linear-gradient(to right, var(--color-ink-400) 1px, transparent 1px);
+  background-size:
+    8px 4px,
+    40px 8px;
+  background-position:
+    0 100%,
+    0 100%;
+  background-repeat: repeat-x;
+}
+/* a ledger rule: the heading of a card is closed by a thin line and a fainter one just inside it */
+.ledger-rule {
+  box-shadow:
+    inset 0 -1px 0 0 #fff,
+    inset 0 -2px 0 0 var(--color-ink-100);
+}
+
+/* ---------- the plan editor in the Generate window ----------
+   Hours the school is closed, and times a room is already booked, are drawn as stripes. */
+.closed-hours {
+  background-image: repeating-linear-gradient(135deg, rgb(11 21 36 / 0.07) 0 6px, rgb(11 21 36 / 0.02) 6px 12px);
+}
+.booked {
+  background-color: var(--color-ink-100);
+  background-image: repeating-linear-gradient(135deg, rgb(11 21 36 / 0.1) 0 5px, transparent 5px 10px);
+}
+
+/* ---------- printing ----------
+   Anything marked .no-print (the menu, the controls) is left off the paper. The timetable pages are in
+   .print-only, which is hidden on screen. Landscape fits a week best; the person can change it in the print window. */
+.print-only {
+  display: none;
+}
+
+@page {
+  size: landscape;
+  margin: 10mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .app-root {
+    display: block !important;
+  }
+  .app-main {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .print-exact {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .timetable-sheet {
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    break-after: page;
+    page-break-after: always;
+  }
+  .timetable-sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}
+
+/* ---------- paper tape ----------
+   A strip of paper with a zigzag torn edge at the top and bottom, like the roll a till or a clock-in machine prints.
+   Used for the locker's own log, which really is a printout of taps. */
+.tape {
+  position: relative;
+}
+.tape::before,
+.tape::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background-repeat: repeat-x;
+  background-size: 14px 7px;
+}
+.tape::before {
+  top: -6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpolygon points='0,7 14,7 7,0' fill='%23fffef9'/%3E%3C/svg%3E");
+}
+.tape::after {
+  bottom: -6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpolygon points='0,0 14,0 7,7' fill='%23fffef9'/%3E%3C/svg%3E");
+}
+
+/* the day plan sits on faint squared paper, like the sheet a floor plan is drawn on */
+.drafting-sheet {
+  background-image:
+    linear-gradient(to right, rgb(38 61 92 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(38 61 92 / 0.045) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* A library index card: a red head line, faint ruling below it, and a punched hole. Lines sit behind the writing. */
+.index-card {
+  isolation: isolate;
+}
+.index-card::before,
+.index-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.index-card::before {
+  top: 39px;
+  bottom: 0;
+  background: repeating-linear-gradient(to bottom, transparent 0, transparent 22px, rgb(111 148 204 / 0.2) 22px, rgb(111 148 204 / 0.2) 23px);
+}
+.index-card::after {
+  top: 38px;
+  height: 1px;
+  background: rgb(190 18 60 / 0.38);
+}
+
+/* Continuous-form printout paper: green bars across the sheet and a tractor-feed strip of holes down each side. */
+.printout {
+  position: relative;
+  isolation: isolate;
+  background-color: #fff;
+  background-image: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0) 0, rgb(255 255 255 / 0) 24px, rgb(209 250 229 / 0.55) 24px, rgb(209 250 229 / 0.55) 48px);
+  background-position: 0 14px;
+}
+.printout::before,
+.printout::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22px;
+  z-index: -1;
+  background-color: #fff;
+  background-image: radial-gradient(circle at 50% 50%, #edf0f5 0 4px, rgb(11 21 36 / 0.22) 4px 5px, transparent 5.5px);
+  background-size: 22px 24px;
+  background-position: center 8px;
+}
+.printout::before {
+  left: 0;
+  border-right: 1px dashed rgb(11 21 36 / 0.22);
+}
+.printout::after {
+  right: 0;
+  border-left: 1px dashed rgb(11 21 36 / 0.22);
+}

@@ -1,0 +1,41 @@
+{
+  "name": "classroom360-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/setup-presence.mjs --soft",
+    "dev": "vite",
+    "prebuild": "node scripts/setup-presence.mjs --soft",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"scheduler-tests/*.test.ts\" \"tests/*.test.ts\"",
+    "test:scheduler": "node --test \"scheduler-tests/*.test.ts\"",
+    "test:import": "node --test \"tests/*.test.ts\"",
+    "setup:presence": "node scripts/setup-presence.mjs",
+    "test:presence": "node --test \"tests/presence-*.test.ts\""
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "@tanstack/react-query": "^5.105.1",
+    "cpsat-js": "1.5.1",
+    "lucide-react": "^1.66.0",
+    "onnxruntime-web": "1.31.1",
+    "papaparse": "5.7.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5",
+    "read-excel-file": "9.3.14"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/papaparse": "5.5.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

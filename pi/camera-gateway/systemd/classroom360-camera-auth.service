@@ -1,0 +1,19 @@
+[Unit]
+Description=Classroom360 camera access check
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=classroom360
+Group=classroom360
+EnvironmentFile=/etc/classroom360/camera-gateway.env
+ExecStart=/usr/bin/python3 -I /opt/classroom360/camera_auth.py
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
